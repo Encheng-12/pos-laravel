@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -12,6 +13,8 @@ class PaymentController extends Controller
     public function index()
     {
         //
+        $payment = Payment::all();
+        return response()->json($payment);
     }
 
     /**
@@ -20,6 +23,16 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'payment_method' => 'required|string',
+            'amount' => 'required|numeric',
+            'reference_no' => 'required|string',
+            'paid_at' => 'required|date',
+        ]);
+
+        $payment = Payment::create($validated);
+        return response()->json($payment, 201);
     }
 
     /**
@@ -28,6 +41,8 @@ class PaymentController extends Controller
     public function show(string $id)
     {
         //
+        $payment = Payment::findOrFail($id);
+        return response()->json($payment);
     }
 
     /**
@@ -36,6 +51,17 @@ class PaymentController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'payment_method' => 'required|string',
+            'amount' => 'required|numeric',
+            'reference_no' => 'required|string',
+            'paid_at' => 'required|date',
+        ]);
+
+        $payment = Payment::findOrFail($id);
+        $payment->update($validated);
+        return response()->json($payment);
     }
 
     /**
@@ -44,5 +70,8 @@ class PaymentController extends Controller
     public function destroy(string $id)
     {
         //
+        $payment = Payment::findOrFail($id);
+        $payment->delete();
+        return response()->json(null, 204);
     }
 }
