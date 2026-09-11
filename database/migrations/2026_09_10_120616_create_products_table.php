@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id('productid');
             $table->foreignID('cid')->constrained('categories'); 
             $table->string('name'); 
-            $table->string('barcode'); 
-            $table->integer('cost_price'); 
-            $table->integer('selling_price'); 
-            $table->integer('stock_quantity'); 
-            $table->string('status'); 
+            $table->string('barcode')->nullable(); 
+            $table->decimal('cost_price',10,2); 
+            $table->decimal('selling_price',10,2); 
+            $table->integer('stock_quantity')->default(0); 
+            $table->string('status')->default('pending'); 
             $table->timestamps();
         });
     }
