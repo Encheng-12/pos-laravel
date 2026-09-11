@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignID('paymentid')->constrained('payments');
             $table->foreignID('cashierid')->constrained('users');
             $table->foreignID('customerid')->constrained('users');
-            $table->integer('invoice_no');
+            $table->string('invoice_no');
             $table->integer('subtotal');
             $table->integer('tax');
-            $table->integer('discount');
+            $table->integer('discount')->default(0);
             $table->integer('statust')->default('pending');
             $table->timestamps();
         });
