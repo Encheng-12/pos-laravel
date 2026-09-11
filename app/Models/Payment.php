@@ -8,4 +8,5 @@ class Payment extends Model
 {
     //
     protected $table = "payments";
+    protected $fillable = ["order_id","payment_method","amount","reference_no","paid_at"];
 }
