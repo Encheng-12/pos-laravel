@@ -14,4 +14,7 @@ class Product extends Model
     public function stockmovements():HasMany{
         return $this->hasMany(Stockmovement::class);
     }
+    public function orderproducts():HasMany{
+        return $this->hasMany(Order_Product::class);
+    }
 }

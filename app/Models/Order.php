@@ -17,4 +17,7 @@ class Order extends Model
     public function payment():HasMany{
         return $this->hasMany(Payment::class);
     }
+    public function orderproducts():HasMany{
+        return $this->hasMany(Order_Product::class);
+    }
 }
