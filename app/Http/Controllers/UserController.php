@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -11,15 +12,27 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::with('orders')->get();
+
+        return $users;
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+       $validated = $request->validate([
+            "name" => "required|string|max:255",
+            "email" => "nullable|email|unique:students,email",
+            "address" => "nullable|string|max:255",
+            "phone_number" => "required|integer|max:13",
+            "role" => "nullable|string",
+            "status" => "nullable|string",
+        ]);
+
+        $user = User::create([$validated]);
+        return $user;
     }
 
     /**
@@ -35,7 +48,9 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $users = User::with('orders')->findOrFail($id);
+
+        return $users;
     }
 
     /**
@@ -51,7 +66,17 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = $request->validate([
+            "name" => "required|string|max:255",
+            "email" => "nullable|email|unique:students,email",
+            "address" => "nullable|string|max:255",
+            "phone_number" => "required|integer|max:13",
+            "role" => "nullable|string",
+            "status" => "nullable|string",
+        ]);
+
+        $user = User::findOrFail($id)->update($validated);
+        return $user;
     }
 
     /**
@@ -59,6 +84,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $users = User::findOrFail($id)->delete();
+        return "delete successfully";
     }
 }
