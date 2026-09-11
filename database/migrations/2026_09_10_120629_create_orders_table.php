@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('subtotal');
             $table->integer('tax');
             $table->integer('discount');
-            $table->integer('statust');
+            $table->integer('statust')->default('pending');
             $table->timestamps();
         });
     }
