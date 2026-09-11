@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 
 class StockmovementController extends Controller
@@ -12,6 +13,8 @@ class StockmovementController extends Controller
     public function index()
     {
         //
+        $stockmovement = StockMovement::all();
+        return response()->json($stockmovement);
     }
 
     /**
@@ -20,6 +23,16 @@ class StockmovementController extends Controller
     public function store(Request $request)
     {
         //
+        $validated = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'type' => 'required|string',
+            'quantity' => 'required|numeric',
+            'reference' => 'required|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        $stockmovement = StockMovement::create($validated);
+        return response()->json($stockmovement, 201);
     }
 
     /**
@@ -28,6 +41,8 @@ class StockmovementController extends Controller
     public function show(string $id)
     {
         //
+        $stockmovement = StockMovement::findOrFail($id);
+        return response()->json($stockmovement);
     }
 
     /**
@@ -36,6 +51,17 @@ class StockmovementController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validated = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'type' => 'required|string',
+            'quantity' => 'required|numeric',
+            'reference' => 'required|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        $stockmovement = StockMovement::findOrFail($id);
+        $stockmovement->update($validated);
+        return response()->json($stockmovement);
     }
 
     /**
@@ -44,5 +70,8 @@ class StockmovementController extends Controller
     public function destroy(string $id)
     {
         //
+        $stockmovement = StockMovement::findOrFail($id);
+        $stockmovement->delete();
+        return response()->json(null, 204);
     }
 }
