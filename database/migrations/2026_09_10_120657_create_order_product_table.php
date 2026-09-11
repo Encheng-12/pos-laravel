@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity');
             $table->string('unit_price');
-            $table->integer('discount')->nullable();
-            $table->decimal('amount', 10, 2);
+            $table->integer('discount')->nullable()->default(0);
+            $table->decimal('amount', 10, 2)->default(0);
         });
     }
 
