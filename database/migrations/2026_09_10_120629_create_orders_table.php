@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignID('cashierid')->constrained('users');
-            $table->foreignID('customerid')->constrained('users');
+            $table->foreignId('cashier_id')->constrained('users');
+            $table->foreignId('customer_id')->constrained('users');
             $table->string('invoice_no');
             $table->integer('subtotal');
             $table->integer('tax');
