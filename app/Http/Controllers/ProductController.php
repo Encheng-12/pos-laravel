@@ -13,7 +13,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = Prdouct::all();
-        return $product;
+        return response()->json($product);
     }
 
     /**
@@ -39,8 +39,9 @@ class ProductController extends Controller
             'status'=>'nullable|string|max:255'
         ]);
 
-        $product = Product::create($validate);
-        return $product;
+        $product = Product::create($validate);                
+        return response()->json($product);
+
     }
 
     /**
@@ -48,15 +49,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $product = Prdouct::findOrFail($id);
+        return response()->json($product);
     }
 
     /**
@@ -64,7 +58,19 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'cid'=>'required|exists:categories,id',
+            'name'=>'required|string|max:255',
+            'barcode'=>'nullable|string|max:255',
+            'cost_pricer'=>'required|integer|min:1',
+            'selling_price'=>'required|integer|min:1',
+            'stock_quantity'=>'required|integer|min:1',
+            'status'=>'nullable|string|max:255'
+        ]);
+
+        $product = Product::findOrFail($validate);                
+        return response()->json($product);
+
     }
 
     /**
@@ -72,6 +78,8 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product -> delete();
+        return response()->json(null, 204);
     }
 }
