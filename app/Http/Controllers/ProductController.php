@@ -13,7 +13,8 @@ class ProductController extends Controller
     public function index()
     {
         $product = Prdouct::with('categories')->get();
-        return response()->json($product);
+        return $product;
+
     }
 
     /**
@@ -40,7 +41,8 @@ class ProductController extends Controller
         ]);
 
         $product = Product::create($validate);                
-        return response()->json($product);
+        return $product;
+
 
     }
 
@@ -50,7 +52,8 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::with('categories')->findOrFail($id);
-        return response()->json($product);
+        return $product;
+
     }
 
     /**
@@ -69,7 +72,7 @@ class ProductController extends Controller
         ]);
 
         $product = Product::findOrFail($validate);                
-        return response()->json($product);
+        return $product;
 
     }
 
@@ -79,7 +82,8 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $product -> delete();
-        return response()->json(null, 204);
+        $product -> delete();                
+        return "Data delete successfully!";
+
     }
 }

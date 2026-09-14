@@ -13,7 +13,7 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::with('users')->get();
-        return response()->json($order);
+        return $order;
     }
 
     /**
@@ -32,7 +32,8 @@ class OrderController extends Controller
         ]);
         
         $order = Order::create($validate);
-        return response()->json($order);
+        return $order;
+
 
     }
 
@@ -42,7 +43,8 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::with('users')->findOrFial($id);
-        return response()->json($order);
+        return $order;
+
 
     }
 
@@ -62,7 +64,8 @@ class OrderController extends Controller
         ]);
         
         $order = Order::findOrFail($validate);
-        return response()->json($order);
+        return $order;
+
     }
 
     /**
@@ -72,6 +75,6 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($id);
         $order -> delete();
-        return response()->json(null, 204);
+        return "Data delete successfully!";
     }
 }

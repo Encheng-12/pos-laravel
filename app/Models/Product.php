@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    protected $fillable =['cid','name','barcode','cost_price','selling_price','stock_quantity','status',];
+    protected $fillable =['id','cid','name','barcode','cost_price','selling_price','stock_quantity','status'];
 
     public function categories():BelongsTo{
         return $this->belongsTo(Category::class);
     }
-    public function stockmovements():HasMany{
+    public function stock_movements():HasMany{
         return $this->hasMany(Stockmovement::class);
     }
-    public function orderproducts():HasMany{
+    public function order_products():HasMany{
         return $this->hasMany(Order_Product::class);
     }
 }
