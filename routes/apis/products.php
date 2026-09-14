@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\Product;
+use App\Models\ProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
