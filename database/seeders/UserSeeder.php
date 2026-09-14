@@ -1,0 +1,119 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+class UserSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        $users = [[
+            "id"=> 1,
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 2,
+            'name' => 'Sarah Connor',
+            'email' => 'sarah.c@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 3,
+            'name' => 'Michael Smith',
+            'email' => 'm.smith@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 4,
+            'name' => 'Emily Watson',
+            'email' => 'emily.watson@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 5,
+            'name' => 'David Miller',
+            'email' => 'd.miller@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+            ],
+        [
+            'id'=> 6,
+            'name' => 'Jessica Taylor',
+            'email' => 'jess.taylor@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 7,
+            'name' => 'James Wilson',
+            'email' => 'j.wilson@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 8,
+            'name' => 'Amanda White',
+            'email' => 'a.white@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 9,
+            'name' => 'Robert Johnson',
+            'email' => 'robert.j@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+
+        ],
+        [
+            'id'=> 10,
+            'name' => 'Lisa Anderson',
+            'email' => 'lisa.a@example.com',
+            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'role' => 'cashier',
+            'phone_number' => '0123456789'
+        ],
+        ];
+
+        foreach($users as $user){
+            User::create([
+                'id' => $user['id'],
+                'name'=> $user['name'],
+                'email'=> $user['email'],
+                'password'=> Hash::make($user['password']),
+                'role'=> $user['role'],
+                'phone_number' => $user['phone_number'],
+                    
+            ]);
+        }
+    }
+}
