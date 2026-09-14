@@ -13,7 +13,7 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $product =[
+        $products =[
             [
                 'cid' => 1,
                 'name' => 'Wireless Mechanical Keyboard',
