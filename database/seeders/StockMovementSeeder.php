@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\StockMovement;
+use App\Models\Stockmovement;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -125,7 +125,7 @@ class StockMovementSeeder extends Seeder
         ];
 
         foreach ($stockMovements as $stockMovement) {
-            StockMovement::create($stockMovement);
+            Stockmovement::create($stockMovement);
         }
     }
 }
