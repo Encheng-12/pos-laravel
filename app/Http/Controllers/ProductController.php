@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Prdouct::all();
+        $product = Prdouct::with('categories')->get();
         return response()->json($product);
     }
 
@@ -49,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Prdouct::findOrFail($id);
+        $product = Product::with('categories')->findOrFail($id);
         return response()->json($product);
     }
 
