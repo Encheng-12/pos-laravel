@@ -7,14 +7,14 @@ use Illuminate\Database\Seeder;
 use App\Models\Order_Product;
 
 
-class Order_PoductSeeder extends Seeder
+class Order_ProductSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $order_product=[
+        $order_products=[
             [
                 'order_id' => 1,
                 'product_id' => 1,
@@ -115,7 +115,7 @@ class Order_PoductSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],];
-            foreach ($order_product as $order_product){
+            foreach ($order_products as $order_product){
             Order_Product::create($order_product);
         }
     }
