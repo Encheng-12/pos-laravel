@@ -13,7 +13,7 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        $order = [
+        $orders = [
             [
                 'cashier_id' => 1,
                 'customer_id' => 3,
