@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Models\OrderController;
+use App\Http\Controller\OrderController;
 
 
 Route::get('/user', function (Request $request) {
