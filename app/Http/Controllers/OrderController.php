@@ -13,14 +13,7 @@ class OrderController extends Controller
     public function index()
     {
         $order = Order::all();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json($order);
     }
 
     /**
@@ -39,7 +32,8 @@ class OrderController extends Controller
         ]);
         
         $order = Order::create($validate);
-        return $order;
+        return response()->json($order);
+
     }
 
     /**
@@ -47,15 +41,9 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        $order = Order::findOrFial($id);
+        return response()->json($order);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -63,7 +51,18 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'cashier_id'=>'required|exists:users,id',
+            'customer_id'=>'required|exists:users,id',
+            'invoice_no'=>'required|string|max:255',
+            'subtotal'=>'required|integer|min:1',
+            'tax'=>'required|integer|min:1',
+            'discount'=>'required|integer|min:1',
+            'status'=>'required|string|max:255'
+        ]);
+        
+        $order = Order::findOrFail($validate);
+        return response()->json($order);
     }
 
     /**
@@ -71,6 +70,8 @@ class OrderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $order = Order::findOrFail($id);
+        $order -> delete();
+        return response()->json(null, 204);
     }
 }
