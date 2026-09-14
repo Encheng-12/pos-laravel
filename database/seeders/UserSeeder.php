@@ -15,90 +15,92 @@ class UserSeeder extends Seeder
     {
         $users = [[
             "id"=> 1,
-            'name' => 'Student1',
-            'email' => 'student16@gmail.com',
+            'name' => 'John Doe',
+            'email' => 'john.doe@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
+
         ],
         [
             'id'=> 2,
-            'name' => 'Student2',
-            'email' => 'student17@gmail.com',
+            'name' => 'Sarah Connor',
+            'email' => 'sarah.c@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 3,
-            'name' => 'Student3',
-            'email' => 'student18@gmail.com',
+            'name' => 'Michael Smith',
+            'email' => 'm.smith@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 4,
-            'name' => 'Student4',
-            'email' => 'student19@gmail.com',
+            'name' => 'Emily Watson',
+            'email' => 'emily.watson@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 5,
-            'name' => 'Student5',
-            'email' => 'student20@gmail.com',
+            'name' => 'David Miller',
+            'email' => 'd.miller@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
-        ],
+            ],
         [
             'id'=> 6,
-            'name' => 'Student6',
-            'email' => 'student21@gmail.com',
+            'name' => 'Jessica Taylor',
+            'email' => 'jess.taylor@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 7,
-            'name' => 'Student7',
-            'email' => 'student22@gmail.com',
+            'name' => 'James Wilson',
+            'email' => 'j.wilson@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 8,
-            'name' => 'Student8',
-            'email' => 'student23@gmail.com',
+            'name' => 'Amanda White',
+            'email' => 'a.white@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
 
         ],
         [
             'id'=> 9,
-            'name' => 'Student9',
-            'email' => 'student24@gmail.com',
+            'name' => 'Robert Johnson',
+            'email' => 'robert.j@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
+
         ],
         [
             'id'=> 10,
-            'name' => 'Student10',
-            'email' => 'student25@gmail.com',
+            'name' => 'Lisa Anderson',
+            'email' => 'lisa.a@example.com',
             'password' => Hash::make('123456789', ['rounds' => 12]),
             'role' => 'cashier',
-            'phone_number' => '012345678'
+            'phone_number' => '0123456789'
         ],
         ];
 
