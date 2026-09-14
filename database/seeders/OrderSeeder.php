@@ -22,8 +22,7 @@ class OrderSeeder extends Seeder
                 'tax' => 15000,
                 'discount' => 5000,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 1,
@@ -33,8 +32,7 @@ class OrderSeeder extends Seeder
                 'tax' => 25000,
                 'discount' => 0,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 2,
@@ -44,8 +42,7 @@ class OrderSeeder extends Seeder
                 'tax' => 9500,
                 'discount' => 2000,
                 'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 1,
@@ -55,8 +52,7 @@ class OrderSeeder extends Seeder
                 'tax' => 42000,
                 'discount' => 20000,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 2,
@@ -66,8 +62,7 @@ class OrderSeeder extends Seeder
                 'tax' => 18000,
                 'discount' => 10000,
                 'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 1,
@@ -77,8 +72,7 @@ class OrderSeeder extends Seeder
                 'tax' => 31000,
                 'discount' => 15000,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 2,
@@ -88,8 +82,7 @@ class OrderSeeder extends Seeder
                 'tax' => 7500,
                 'discount' => 0,
                 'status' => 'cancelled',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 1,
@@ -99,8 +92,7 @@ class OrderSeeder extends Seeder
                 'tax' => 54000,
                 'discount' => 30000,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 2,
@@ -110,8 +102,7 @@ class OrderSeeder extends Seeder
                 'tax' => 12500,
                 'discount' => 5000,
                 'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cashier_id' => 1,
@@ -121,8 +112,7 @@ class OrderSeeder extends Seeder
                 'tax' => 21000,
                 'discount' => 10000,
                 'status' => 'completed',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
         ];
         foreach ($order as $order){

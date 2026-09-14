@@ -22,8 +22,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 89.99,
                 'stock_quantity' => 120,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 1,
@@ -33,8 +32,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 49.99,
                 'stock_quantity' => 85,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 2,
@@ -44,8 +42,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 449.99,
                 'stock_quantity' => 15,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 2,
@@ -55,8 +52,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 29.99,
                 'stock_quantity' => 200,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 3,
@@ -66,8 +62,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 24.99,
                 'stock_quantity' => 150,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 3,
@@ -77,8 +72,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 79.99,
                 'stock_quantity' => 40,
                 'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 4,
@@ -88,8 +82,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 39.99,
                 'stock_quantity' => 60,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 4,
@@ -99,8 +92,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 34.99,
                 'stock_quantity' => 0,
                 'status' => 'pending',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 5,
@@ -110,8 +102,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 129.99,
                 'stock_quantity' => 30,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ],
             [
                 'cid' => 5,
@@ -121,8 +112,7 @@ class ProductSeeder extends Seeder
                 'selling_price' => 59.99,
                 'stock_quantity' => 95,
                 'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
+                
             ]
         ];
         
