@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Order::with('users')->findOrFial($id);
+        $order = Order::with('users')->findOrFail($id);
         return $order;
 
 
