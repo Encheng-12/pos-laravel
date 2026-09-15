@@ -83,7 +83,7 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         $product = Product::findOrFail($id);
-        $product -> delete();                
+        $product -> destroy($id);                
         return "Data delete successfully!";
 
     }
