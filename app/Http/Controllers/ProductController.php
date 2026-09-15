@@ -10,9 +10,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $product = Product::with('categories')->get();
+        $search = $request->input('search');
+
+        $product = Product::with('categories')->when($search,function($query,$search){
+            return $query->where('name','LIKE',"%{$search}%");
+        })->get();
+
+        // $product = Product::with('categories')->get();
         return $product;
 
     }

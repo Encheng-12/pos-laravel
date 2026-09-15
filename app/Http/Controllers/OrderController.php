@@ -10,9 +10,15 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $order = Order::with('customer')->get();
+        $search = $request->input('search');
+
+        $order = Order::with('customer')->when($search,function($query,$search){
+            return $query->where('invoice_no','LIKE',"%{$search}%");
+        })->get();
+
+        // $order = Order::with('customer')->get();
         return $order;
     }
 
