@@ -11,8 +11,8 @@ class Order extends Model
 {
     protected $fillable =['id','cashier_id','customer_id','invoice_no','subtotal','tax','discount','status'];
 
-    public function users():BelongsTo{
-        return $this->belongsTo(User::class);
+    public function customer():BelongsTo{
+        return $this->belongsTo(User::class,'customer_id','id');
     }
     public function payment():HasMany{
         return $this->hasMany(Payment::class);
