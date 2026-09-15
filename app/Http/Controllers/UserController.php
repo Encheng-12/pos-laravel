@@ -32,9 +32,9 @@ class UserController extends Controller
     {
        $validated = $request->validate([
             "name" => "required|string|max:255",
-            "email" => "nullable|email|unique:students,email",
+            "email" => "nullable|email|unique:users,email",
             "address" => "nullable|string|max:255",
-            "phone_number" => "required|integer|max:13",
+            "phone_number" => "required|string|max:13|regex:/^[0-9\-\+]+$/",
             "role" => "nullable|string",
             "status" => "nullable|string",
         ]);
@@ -68,9 +68,9 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             "name" => "required|string|max:255",
-            "email" => "nullable|email|unique:students,email",
+            "email" => "nullable|email|unique:users,email,". $id,
             "address" => "nullable|string|max:255",
-            "phone_number" => "required|integer|max:13",
+            "phone_number" => "required|string|max:13|regex:/^[0-9\-\+]+$/",
             "role" => "nullable|string",
             "status" => "nullable|string",
         ]);
