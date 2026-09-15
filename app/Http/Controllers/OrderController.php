@@ -54,16 +54,17 @@ class OrderController extends Controller
     public function update(Request $request, string $id)
     {
         $validate = $request->validate([
-            'cashier_id'=>'required|exists:users,id',
-            'customer_id'=>'required|exists:users,id',
-            'invoice_no'=>'required|string|max:255',
-            'subtotal'=>'required|integer|min:1',
-            'tax'=>'required|integer|min:1',
-            'discount'=>'required|integer|min:1',
-            'status'=>'required|string|max:255'
+            'cashier_id'=>'sometimes|exists:users,id',
+            'customer_id'=>'sometimes|exists:users,id',
+            'invoice_no'=>'sometimes|string|max:255',
+            'subtotal'=>'sometimes|integer|min:1',
+            'tax'=>'sometimes|integer|min:1',
+            'discount'=>'sometimes|integer|min:1',
+            'status'=>'sometimes|string|max:255'
         ]);
         
-        $order = Order::findOrFail($validate);
+        $order = Order::findOrFail($id);
+        $order->update($validate);
         return $order;
 
     }

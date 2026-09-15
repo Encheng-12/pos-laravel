@@ -31,7 +31,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'cid'=>'required|exists:categories,id',
+            'category_id'=>'required|exists:categories,id',
             'name'=>'required|string|max:255',
             'barcode'=>'nullable|string|max:255',
             'cost_pricer'=>'required|integer|min:1',
@@ -62,16 +62,17 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $validate = $request->validate([
-            'cid'=>'required|exists:categories,id',
-            'name'=>'required|string|max:255',
-            'barcode'=>'nullable|string|max:255',
-            'cost_pricer'=>'required|integer|min:1',
-            'selling_price'=>'required|integer|min:1',
-            'stock_quantity'=>'required|integer|min:1',
-            'status'=>'nullable|string|max:255'
+            'category_id'=>'sometimes|exists:categories,id',
+            'name'=>'sometimes|string|max:255',
+            'barcode'=>'sometimes|string|max:255',
+            'cost_price'=>'sometimes|integer|min:1',
+            'selling_price'=>'sometimes|integer|min:1',
+            'stock_quantity'=>'sometimes|integer|min:1',
+            'status'=>'sometimes|string|max:255'
         ]);
 
-        $product = Product::findOrFail($validate);                
+        $product = Product::findOrFail($id);
+        $product->update($validate);                
         return $product;
 
     }
