@@ -10,9 +10,13 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::with('orders')->get();
+        $search =  $request->input('search');
+        
+        $users = User::with('orders')->when($search, function($query, $search ){
+            return $query->where('name', 'LIKE', "%{$search}%");
+        })->get();
 
         return $users;
     }
@@ -67,16 +71,16 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            "name" => "required|string|max:255",
-            "email" => "nullable|email|unique:users,email,". $id,
-            "address" => "nullable|string|max:255",
-            "phone_number" => "required|string|max:13|regex:/^[0-9\-\+]+$/",
-            "role" => "nullable|string",
-            "status" => "nullable|string",
+            "name" => "sometimes|string|max:255",
+            "email" => "sometimes|email|unique:users,email,". $id,
+            "address" => "somtimes|string|max:255",
+            "phone_number" => "sometimes|string|max:13|regex:/^[0-9\-\+]+$/",
+            "role" => "sometimes|string",
+            "status" => "sometimes|string",
         ]);
 
         $user = User::findOrFail($id)->update($validated);
-        return $user;
+        return "Updated Successfully!";
     }
 
     /**
@@ -85,6 +89,6 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $users = User::findOrFail($id)->delete();
-        return "delete successfully";
+        return "Deleted Successfully";
     }
 }

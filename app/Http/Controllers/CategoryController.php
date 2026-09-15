@@ -11,9 +11,16 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('products')->get();
+        $search =  $request->input('search');
+        
+
+
+        $categories = Category::with('products')->when($search, function($query, $search ){
+            return $query->where('name', 'LIKE', "%{$search}%");
+        })->get();
+        
         return $categories;
     }
 
@@ -62,12 +69,12 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            "name" => "required|string|max:255",
-            "description" => "nullable|string|max:255",
+            "name" => "sometimes|string|max:255",
+            "description" => "sometimes|string|max:255",
         ]);
 
         $category = Category::findOrFail($id)->update($validated);
-        return $validated;
+        return "Updated Successfully";
     }
 
     /**
@@ -76,6 +83,6 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $categories =Category::findOrFail( $id)->delete();
-        return "delete successfully";
+        return "Deleted Successfully";
     }
 }
