@@ -11,7 +11,7 @@ class Product extends Model
     protected $fillable =['id','cid','name','barcode','cost_price','selling_price','stock_quantity','status'];
 
     public function categories():BelongsTo{
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class,'cid','id');
     }
     public function stock_movements():HasMany{
         return $this->hasMany(Stockmovement::class);

@@ -12,7 +12,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $order = Order::with('users')->get();
+        $order = Order::with('customer')->get();
         return $order;
     }
 
@@ -42,7 +42,7 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Order::with('users')->findOrFail($id);
+        $order = Order::with('customer')->findOrFail($id);
         return $order;
 
 
