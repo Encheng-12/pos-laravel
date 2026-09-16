@@ -17,7 +17,7 @@ class StockmovementController extends Controller
         // return response()->json($stockmovement);
         $search = $request->input('search');
 
-    $stockMovements = StockMovement::when($search, function ($query, $search) {
+    $stockMovements = StockMovement::with(['product'])->when($search, function ($query, $search) {
         return $query
             ->where('type', 'LIKE', "%{$search}%")
             ->orWhere('reference', 'LIKE', "%{$search}%");
