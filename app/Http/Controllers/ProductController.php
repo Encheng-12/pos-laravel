@@ -15,7 +15,7 @@ class ProductController extends Controller
         $search = $request->input('search');
 
         $sortBy = $request->input('sort_by'); // Default column to sort by
-        $sortDirection = $request->query('sort_direction', 'desc'); // Default direction
+        $sortDirection = $request->input('sort_direction', 'desc'); // Default direction
 
         // Ensure direction is valid
         $sortDirection = strtolower($sortDirection) === 'asc' ? 'asc' : 'desc';
