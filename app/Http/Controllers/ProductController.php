@@ -14,14 +14,18 @@ class ProductController extends Controller
     {
         $search = $request->input('search');
 
-        $product = Product::with('categories')->when($search,function($query,$search){
-            return $query->where('name','LIKE',"%{$search}%");
-        })->get();
+        $sortBy = $request->input('sort_by'); // Default column to sort by
+        $sortDirection = $request->query('sort_direction', 'desc'); // Default direction
 
-        // $product = Product::with('categories')->get();
-        return $product;
+        // Ensure direction is valid
+        $sortDirection = strtolower($sortDirection) === 'asc' ? 'asc' : 'desc';
 
-    }
+        $product = Product::with('categories')->when($search, function($query, $search) {
+                return $query->where('name', 'LIKE', "%{$search}%");
+            })->orderBy($sortBy, $sortDirection)->get();
+
+    return $product;
+}
 
     /**
      * Show the form for creating a new resource.
