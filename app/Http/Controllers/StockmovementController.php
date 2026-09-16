@@ -16,12 +16,15 @@ class StockmovementController extends Controller
         // $stockmovement = StockMovement::all();   
         // return response()->json($stockmovement);
         $search = $request->input('search');
-
+        $sortby  = $request->input('sortby');
+        $order = $request->input('order');
     $stockMovements = StockMovement::with(['product'])->when($search, function ($query, $search) {
         return $query
             ->where('type', 'LIKE', "%{$search}%")
             ->orWhere('reference', 'LIKE', "%{$search}%");
-    })->get();
+    })->orderBy($sortby, $order)->get();
+
+    
 
     return $stockMovements;
     }
