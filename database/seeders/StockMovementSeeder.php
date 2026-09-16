@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\StockMovement;
+
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use App\Models\StockMovement;
 class StockMovementSeeder extends Seeder
 {
     /**
