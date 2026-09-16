@@ -20,6 +20,7 @@ class PaymentController extends Controller
         $order = $request->input('order');
 
     $payments = Payment::with('order')
+    ->paginate($request->input('page', 10)) // Default to 10 items per page if not specified
         ->when($search, function ($query, $search) {
             return $query->where('payment_method', 'LIKE', "%{$search}%")
                 ->orWhere('reference_no', 'LIKE', "%{$search}%");

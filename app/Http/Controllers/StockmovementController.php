@@ -18,11 +18,12 @@ class StockmovementController extends Controller
         $search = $request->input('search');
         $sortby  = $request->input('sortby');
         $order = $request->input('order');
+        $per_page = $request->input('page'); // Default to 10 items per page if not specified
     $stockMovements = StockMovement::with(['product'])->when($search, function ($query, $search) {
         return $query
             ->where('type', 'LIKE', "%{$search}%")
             ->orWhere('reference', 'LIKE', "%{$search}%");
-    })->orderBy($sortby, $order)->get();
+    })->orderBy($sortby, $order)->paginate($per_page);
 
     
 
