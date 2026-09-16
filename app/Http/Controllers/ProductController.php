@@ -22,8 +22,8 @@ class ProductController extends Controller
         $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
 
         $product = Product::with('categories')->when($search, function($query, $search) {
-                return $query->where('name', 'LIKE', "%{$search}%");
-            })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
+            return $query->where('name', 'LIKE', "%{$search}%");        
+        })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
 
     return $product;
 }
