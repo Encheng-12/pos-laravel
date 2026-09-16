@@ -16,6 +16,7 @@ class OrderController extends Controller
 
         $sort_By = $request->input('sort_by','invoice_no'); // Default column to sort by
         $sort_Direction = $request->input('sort_direction', 'desc'); // Default direction
+        $perPage = $request->input('per_page',5); // Default items per page
 
         // Ensure direction is valid
         $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
@@ -23,7 +24,7 @@ class OrderController extends Controller
         $order = Order::with('customer')
             ->when($search, function($query, $search) {
                 return $query->where('invoice_no', 'LIKE', "%{$search}%");
-            })->orderBy($sort_By, $sort_Direction)->get();
+            })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
         return $order;
     }
 
