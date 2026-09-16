@@ -13,16 +13,17 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $sortBy = $request->input('sort_by'); // Default column to sort by
-        $sortDirection = $request->input('sort_direction', 'desc'); // Default direction
+
+        $sort_By = $request->input('sort_by','invoice_no'); // Default column to sort by
+        $sort_Direction = $request->input('sort_direction', 'desc'); // Default direction
 
         // Ensure direction is valid
-        $sortDirection = strtolower($sortDirection) === 'asc' ? 'asc' : 'desc';
+        $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
 
         $order = Order::with('customer')
             ->when($search, function($query, $search) {
                 return $query->where('invoice_no', 'LIKE', "%{$search}%");
-            })->orderBy($sortBy, $sortDirection)->get();
+            })->orderBy($sort_By, $sort_Direction)->get();
         return $order;
     }
 
