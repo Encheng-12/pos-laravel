@@ -16,12 +16,16 @@ class PaymentController extends Controller
         // $payment = Payment::all();
         // return response()->json($payment);
         $search = $request->input('search');
+        $sortby = $request->input('sortby');
+        $order = $request->input('order');
 
     $payments = Payment::with('order')
+    ->paginate($request->input('page', 10)) // Default to 10 items per page if not specified
         ->when($search, function ($query, $search) {
             return $query->where('payment_method', 'LIKE', "%{$search}%")
                 ->orWhere('reference_no', 'LIKE', "%{$search}%");
         })
+        ->orderBy($sortby, $order)
         ->get();
 
     return $payments;

@@ -16,12 +16,16 @@ class StockmovementController extends Controller
         // $stockmovement = StockMovement::all();   
         // return response()->json($stockmovement);
         $search = $request->input('search');
-
-    $stockMovements = StockMovement::when($search, function ($query, $search) {
+        $sortby  = $request->input('sortby');
+        $order = $request->input('order');
+        $per_page = $request->input('page'); // Default to 10 items per page if not specified
+    $stockMovements = StockMovement::with(['product'])->when($search, function ($query, $search) {
         return $query
             ->where('type', 'LIKE', "%{$search}%")
             ->orWhere('reference', 'LIKE', "%{$search}%");
-    })->get();
+    })->orderBy($sortby, $order)->paginate($per_page);
+
+    
 
     return $stockMovements;
     }
