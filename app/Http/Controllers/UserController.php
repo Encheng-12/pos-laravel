@@ -13,10 +13,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search =  $request->input('search');
+        $sortby = $request->input('sortby');
+        $order = $request->query('order','desc');
         
         $users = User::with('orders')->when($search, function($query, $search ){
             return $query->where('name', 'LIKE', "%{$search}%");
-        })->get();
+        })->orderBy($sortby,$order)->get();
 
         return $users;
     }
