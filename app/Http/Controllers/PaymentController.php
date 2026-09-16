@@ -10,11 +10,21 @@ class PaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $payment = Payment::all();
-        return response()->json($payment);
+        // $payment = Payment::all();
+        // return response()->json($payment);
+        $search = $request->input('search');
+
+    $payments = Payment::with('order')
+        ->when($search, function ($query, $search) {
+            return $query->where('payment_method', 'LIKE', "%{$search}%")
+                ->orWhere('reference_no', 'LIKE', "%{$search}%");
+        })
+        ->get();
+
+    return $payments;
     }
 
     /**
