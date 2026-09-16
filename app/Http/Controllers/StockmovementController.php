@@ -10,11 +10,20 @@ class StockmovementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $stockmovement = StockMovement::all();
-        return response()->json($stockmovement);
+        // $stockmovement = StockMovement::all();   
+        // return response()->json($stockmovement);
+        $search = $request->input('search');
+
+    $stockMovements = StockMovement::when($search, function ($query, $search) {
+        return $query
+            ->where('type', 'LIKE', "%{$search}%")
+            ->orWhere('reference', 'LIKE', "%{$search}%");
+    })->get();
+
+    return $stockMovements;
     }
 
     /**
