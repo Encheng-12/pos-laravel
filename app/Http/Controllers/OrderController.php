@@ -21,10 +21,9 @@ class OrderController extends Controller
         // Ensure direction is valid
         $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
 
-        $order = Order::with('customer')
-            ->when($search, function($query, $search) {
-                return $query->where('invoice_no', 'LIKE', "%{$search}%");
-            })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
+        $order = Order::with('customer')->when($search, function($query, $search) {
+            return $query->where('invoice_no', 'LIKE', "%{$search}%");
+        })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
         return $order;
     }
 
