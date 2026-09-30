@@ -11,24 +11,31 @@ class StockmovementController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        //
-        // $stockmovement = StockMovement::all();   
-        // return response()->json($stockmovement);
-        $search = $request->input('search');
-        $sortby  = $request->input('sortby');
-        $order = $request->input('order');
-        $per_page = $request->input('page'); // Default to 10 items per page if not specified
-    $stockMovements = StockMovement::with(['product'])->when($search, function ($query, $search) {
-        return $query
-            ->where('type', 'LIKE', "%{$search}%")
-            ->orWhere('reference', 'LIKE', "%{$search}%");
-    })->orderBy($sortby, $order)->paginate($per_page);
+{
+    $search = $request->input('search');
 
-    
+    $sortby = $request->input('sortby', 'created_at');
+    $order = $request->input('order', 'desc');
 
-    return $stockMovements;
-    }
+    $perPage = $request->input('per_page', 10);
+
+    $type = $request->input('type', 'all');
+
+    $stockMovements = StockMovement::with('product')
+        ->when($type !== 'all', function ($query) use ($type) {
+            $query->where('type', $type);
+        })
+        ->when($search, function ($query, $search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('type', 'LIKE', "%{$search}%")
+                      ->orWhere('reference', 'LIKE', "%{$search}%");
+            });
+        })
+        ->orderBy($sortby, $order)
+        ->paginate($perPage);
+
+    return response()->json($stockMovements);
+}
 
     /**
      * Store a newly created resource in storage.

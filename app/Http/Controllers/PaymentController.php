@@ -18,7 +18,7 @@ class PaymentController extends Controller
         $search = $request->input('search');
         $sortby = $request->input('sortby');
         $order = $request->input('order');
-
+        $per_page = $request->input('page'); // Default to 10 items per page if not specified
     $payments = Payment::with('order')
     ->paginate($request->input('page', 10)) // Default to 10 items per page if not specified
         ->when($search, function ($query, $search) {
