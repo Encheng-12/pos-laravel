@@ -17,11 +17,12 @@ class CategoryController extends Controller
         $sortby = $request->input('sortby');
         // $order = $request->input('order', desc);
         $order = $request->input('order');
+        $per_page = $request->input('per_page');
 
 
         $categories = Category::with('products')->when($search, function($query, $search ){
             return $query->where('name', 'LIKE', "%{$search}%");
-        })->orderBy($sortby, $order)->get();
+        })->orderBy($sortby, $order)->paginate($per_page);
         
         return $categories;
     }
