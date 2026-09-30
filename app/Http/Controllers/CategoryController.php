@@ -14,9 +14,8 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $search =  $request->input('search');
-        $sortby = $request->input('sortby');
-        // $order = $request->input('order', desc);
-        $order = $request->input('order');
+        $sortby = $request->input('sortby', 'created_at');
+        $order = $request->input('order','desc');
         $per_page = $request->input('per_page');
 
 
