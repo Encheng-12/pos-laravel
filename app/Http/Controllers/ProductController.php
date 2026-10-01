@@ -16,7 +16,7 @@ class ProductController extends Controller
 
         $sort_By = $request->input('sort_by', 'barcode'); // Default column to sort by
         $sort_Direction = $request->input('sort_direction', 'desc'); // Default direction
-        $perPage = $request->input('per_page',5); // Default items per page
+        $perPage = $request->input('per_page',12); // Default items per page
 
         // Ensure direction is valid
         $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
