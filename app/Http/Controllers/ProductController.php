@@ -45,9 +45,9 @@ class ProductController extends Controller
             'cid'=>'required|exists:categories,id',
             'name'=>'required|string|max:255',
             'barcode'=>'nullable|string|max:255',
-            'cost_price'=>'required|integer|min:1',
-            'selling_price'=>'required|integer|min:1',
-            'stock_quantity'=>'required|integer|min:1',
+            'cost_price'=>'required|decimal:0,2|min:1',
+            'selling_price'=>'required|decimal:0,2|min:1',
+            'stock_quantity'=>'required|decimal|min:1',
             'status'=>'nullable|string|max:255'
         ]);
 
@@ -76,8 +76,8 @@ class ProductController extends Controller
             'category_id'=>'sometimes|exists:categories,id',
             'name'=>'sometimes|string|max:255',
             'barcode'=>'sometimes|string|max:255',
-            'cost_price'=>'sometimes|integer|min:1',
-            'selling_price'=>'sometimes|integer|min:1',
+            'cost_price'=>'sometimes|decimal:0,2|min:1',
+            'selling_price'=>'sometimes|decimal:0,2|min:1',
             'stock_quantity'=>'sometimes|integer|min:1',
             'status'=>'sometimes|string|max:255'
         ]);
