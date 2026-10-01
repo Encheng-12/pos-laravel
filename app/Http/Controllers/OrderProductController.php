@@ -16,7 +16,7 @@ class OrderProductController extends Controller
         $order    = $request->input('order', 'desc');
         $perPage  = $request->input('per_page', 15); // Fallback to 15 if not passed
 
-        $orderProducts = Order_Product::with(['order', 'product'])
+        $orderProducts = Order_Product::with(['orders', 'products'])
             ->when($search, function ($query, $search) {
                 // Search inside the related 'product' table by product name
                 $query->whereHas('product', function ($q) use ($search) {
