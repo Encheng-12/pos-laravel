@@ -42,10 +42,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'category_id'=>'required|exists:categories,id',
+            'cid'=>'required|exists:categories,id',
             'name'=>'required|string|max:255',
             'barcode'=>'nullable|string|max:255',
-            'cost_pricer'=>'required|integer|min:1',
+            'cost_price'=>'required|integer|min:1',
             'selling_price'=>'required|integer|min:1',
             'stock_quantity'=>'required|integer|min:1',
             'status'=>'nullable|string|max:255'
