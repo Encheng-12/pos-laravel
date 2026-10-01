@@ -13,4 +13,5 @@ require __DIR__ . '/apis/products.php';
 require __DIR__ . '/apis/orders.php';
 require __DIR__ . '/apis/payments.php';
 require __DIR__ . '/apis/stock_movements.php';
+require __DIR__ . '/apis/order_product.php';
 

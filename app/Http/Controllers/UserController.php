@@ -19,7 +19,7 @@ class UserController extends Controller
         
         $users = User::with('orders')->when($search, function($query, $search ){
             return $query->where('name', 'LIKE', "%{$search}%");
-        })->orderBy($sortby, $order)->paginate($per_page);
+        })->orderBy($sortby, $order)->orderBy('id', $order)->paginate($per_page);
 
         // orderBy($sortby,$order)->
         return $users;
