@@ -16,6 +16,14 @@ class OrderProductController extends Controller
         $order    = $request->input('order', 'desc');
         $perPage  = $request->input('per_page', 15); // Fallback to 15 if not passed
 
+
+
+        $query = Order_Product::with('products');
+
+        // Filter by order_id if present in request
+        if ($request->has('order_id')) {
+            $query->where('order_id', $request->input('order_id'));}
+
         $orderProducts = Order_Product::with(['orders', 'products'])
             ->when($search, function ($query, $search) {
                 // Search inside the related 'product' table by product name
@@ -27,6 +35,8 @@ class OrderProductController extends Controller
             ->paginate($perPage);
 
         return response()->json($orderProducts);
+        // return response()->json($query->paginate($request->get('per_page', 10)));
+
     }   
 
     /**
