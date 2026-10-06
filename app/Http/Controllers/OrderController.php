@@ -89,7 +89,9 @@ class OrderController extends Controller
             'cashier_id'  => 'sometimes|exists:users,id',
             'customer_id' => 'sometimes|exists:users,id',
             'invoice_no'  => 'sometimes|string|max:255',
+            'subtotal'    => 'sometimes|numeric|min:0',
             'tax'         => 'sometimes|numeric|min:0',
+            'discount'    => 'sometimes|numeric|min:0',
             'status'      => 'sometimes|string|max:255',
         ]);
 
@@ -97,7 +99,7 @@ class OrderController extends Controller
         $order->update($validated);
 
         // Recalculate totals in case tax changed
-        $order->recalculateTotals();
+        // $order->recalculateTotals();
 
         return response()->json($order->load(['customer', 'order_products.products']));
     }
