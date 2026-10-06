@@ -8,27 +8,58 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource with filtering, pagination, and global stats.
      */
     public function index(Request $request)
     {
-        //
-        // $payment = Payment::all();
-        // return response()->json($payment);
+        $method = $request->input('method', 'all');
         $search = $request->input('search');
-        $sortby = $request->input('sortby');
-        $order = $request->input('order');
-        $per_page = $request->input('page'); // Default to 10 items per page if not specified
-    $payments = Payment::with('order')
-    ->paginate($request->input('page', 10)) // Default to 10 items per page if not specified
-        ->when($search, function ($query, $search) {
-            return $query->where('payment_method', 'LIKE', "%{$search}%")
-                ->orWhere('reference_no', 'LIKE', "%{$search}%");
-        })
-        ->orderBy($sortby, $order)
-        ->get();
+        $sortBy = $request->input('sortby', 'id');
+        $order = $request->input('order', 'desc');
+        $perPage = $request->input('per_page', 10);
 
-    return $payments;
+        // Build base query
+        $query = Payment::with('order');
+
+        // 1. Filter by Payment Method (handles "all", "cash", "aba", "acleda", "wing")
+        if ($method && $method !== 'all') {
+            $query->where('payment_method', strtolower($method));
+        }
+
+        // 2. Search Keyword
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('reference_no', 'LIKE', "%{$search}%")
+                  ->orWhere('payment_method', 'LIKE', "%{$search}%")
+                  ->orWhereHas('order', function ($orderQuery) use ($search) {
+                      $orderQuery->where('invoice_no', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        // 3. Compute overall summary metrics BEFORE pagination
+        // (Clone query to ensure metrics reflect current search/method filters)
+        $statsQuery = clone $query;
+        $stats = [
+            'total_count'    => $statsQuery->count(),
+            'total_amount'   => (float) $statsQuery->sum('amount'),
+            'cash_amount'    => (float) (clone $statsQuery)->where('payment_method', 'cash')->sum('amount'),
+            'digital_amount' => (float) (clone $statsQuery)->whereIn('payment_method', ['aba', 'acleda', 'wing'])->sum('amount'),
+        ];
+
+        // 4. Apply Sorting & Pagination
+        $payments = $query->orderBy($sortBy, $order)
+                          ->paginate($perPage);
+
+        // 5. Append summary statistics to JSON output
+        return response()->json([
+            'data'         => $payments->items(),
+            'current_page' => $payments->currentPage(),
+            'last_page'    => $payments->lastPage(),
+            'per_page'     => $payments->perPage(),
+            'total'        => $payments->total(),
+            'stats'        => $stats,
+        ]);
     }
 
     /**
@@ -36,17 +67,16 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $validated = $request->validate([
-            'order_id' => 'required|exists:orders,id',
+            'order_id'       => 'required|exists:orders,id',
             'payment_method' => 'required|string',
-            'amount' => 'required|numeric',
-            'reference_no' => 'required|string',
-            'paid_at' => 'required|date',
+            'amount'         => 'required|numeric|min:0',
+            'reference_no'   => 'nullable|string',
+            'paid_at'        => 'required|date',
         ]);
 
         $payment = Payment::create($validated);
-        return response()->json($payment, 201);
+        return response()->json($payment->load('order'), 201);
     }
 
     /**
@@ -54,8 +84,7 @@ class PaymentController extends Controller
      */
     public function show(string $id)
     {
-        //
-        $payment = Payment::findOrFail($id);
+        $payment = Payment::with('order')->findOrFail($id);
         return response()->json($payment);
     }
 
@@ -64,18 +93,17 @@ class PaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
         $validated = $request->validate([
-            'order_id' => 'required|exists:orders,id',
+            'order_id'       => 'required|exists:orders,id',
             'payment_method' => 'required|string',
-            'amount' => 'required|numeric',
-            'reference_no' => 'required|string',
-            'paid_at' => 'required|date',
+            'amount'         => 'required|numeric|min:0',
+            'reference_no'   => 'nullable|string',
+            'paid_at'        => 'required|date',
         ]);
 
         $payment = Payment::findOrFail($id);
         $payment->update($validated);
-        return response()->json($payment);
+        return response()->json($payment->load('order'));
     }
 
     /**
@@ -83,7 +111,6 @@ class PaymentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
         $payment = Payment::findOrFail($id);
         $payment->delete();
         return response()->json(null, 204);
