@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             "id"=> 1,
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => '123456789', 
             'role' => 'cashier',
             'phone_number' => '0123456789'
 

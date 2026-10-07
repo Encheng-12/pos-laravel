@@ -14,9 +14,9 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $search =  $request->input('search');
-        $sortby = $request->input('sortby', 'created_at');
-        $order = $request->input('order','desc');
-        $per_page = $request->input('per_page');
+        $sortby = $request->input('sortby', 'id');
+        $order = $request->input('order','asc');
+        $per_page = $request->input('per_page', 10);
 
 
         $categories = Category::with('products')->when($search, function($query, $search ){

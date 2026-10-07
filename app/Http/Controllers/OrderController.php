@@ -4,89 +4,110 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Order;
+use App\Models\Order_Product;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search         = $request->input('search');
+        $sort_By        = $request->input('sort_by', 'invoice_no');
+        $sort_Direction = $request->input('sort_direction', 'asc');
+        $perPage        = $request->input('per_page', 10);
 
-        $sort_By = $request->input('sort_by','invoice_no'); // Default column to sort by
-        $sort_Direction = $request->input('sort_direction', 'desc'); // Default direction
-        $perPage = $request->input('per_page',5); // Default items per page
-
-        // Ensure direction is valid
         $sort_Direction = strtolower($sort_Direction) === 'asc' ? 'asc' : 'desc';
 
-        $order = Order::with('customer')->when($search, function($query, $search) {
-            return $query->where('invoice_no', 'LIKE', "%{$search}%");
-        })->orderBy($sort_By, $sort_Direction)->paginate($perPage);
-        return $order;
+        return Order::with(['customer', 'order_products.products'])
+            ->when($search, function ($query, $search) {
+                return $query->where('invoice_no', 'LIKE', "%{$search}%");
+            })
+            ->orderBy($sort_By, $sort_Direction)
+            ->paginate($perPage);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $validate = $request->validate([
-            'cashier_id'=>'required|exists:users,id',
-            'customer_id'=>'required|exists:users,id',
-            'invoice_no'=>'required|string|max:255',
-            'subtotal'=>'required|integer|min:1',
-            'tax'=>'required|integer|min:1',
-            'discount'=>'required|integer|min:1',
-            'status'=>'required|string|max:255'
+        $validated = $request->validate([
+            'cashier_id'         => 'required|exists:users,id',
+            'customer_id'        => 'required|exists:users,id',
+            'invoice_no'         => 'required|string|max:255|unique:orders,invoice_no',
+            'tax'                => 'required|numeric|min:0',
+            'status'             => 'required|string|max:255',
+            'items'              => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity'   => 'required|integer|min:1',
+            'items.*.unit_price' => 'required|numeric|min:0',
+            'items.*.discount'   => 'nullable|numeric|min:0',
         ]);
-        
-        $order = Order::create($validate);
-        return $order;
 
+        return DB::transaction(function () use ($validated) {
+            // 1. Create Order shell
+            $order = Order::create([
+                'cashier_id'  => $validated['cashier_id'],
+                'customer_id' => $validated['customer_id'],
+                'invoice_no'  => $validated['invoice_no'],
+                'tax'         => $validated['tax'],
+                'subtotal'    => 0,
+                'discount'    => 0,
+                'total'       => 0,
+                'status'      => $validated['status'],
+            ]);
 
+            // 2. Insert line items into order_product
+            foreach ($validated['items'] as $item) {
+                $qty       = $item['quantity'];
+                $unitPrice = $item['unit_price'];
+                $discount  = $item['discount'] ?? 0;
+                $amount    = ($qty * $unitPrice) - $discount;
+
+                Order_Product::create([
+                    'order_id'   => $order->id,
+                    'product_id' => $item['product_id'],
+                    'quantity'   => $qty,
+                    'unit_price' => $unitPrice,
+                    'discount'   => $discount,
+                    'amount'     => max(0, $amount),
+                ]);
+            }
+
+            // 3. Summarize total price from order_product and update the order table
+            $order->recalculateTotals();
+
+            return response()->json($order->load(['customer', 'order_products.products']), 201);
+        });
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        $order = Order::with('customer')->findOrFail($id);
-        return $order;
-
-
+        return Order::with(['customer', 'order_products.products'])->findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
-        $validate = $request->validate([
-            'cashier_id'=>'sometimes|exists:users,id',
-            'customer_id'=>'sometimes|exists:users,id',
-            'invoice_no'=>'sometimes|string|max:255',
-            'subtotal'=>'sometimes|integer|min:1',
-            'tax'=>'sometimes|integer|min:1',
-            'discount'=>'sometimes|integer|min:1',
-            'status'=>'sometimes|string|max:255'
+        $validated = $request->validate([
+            'cashier_id'  => 'sometimes|exists:users,id',
+            'customer_id' => 'sometimes|exists:users,id',
+            'invoice_no'  => 'sometimes|string|max:255',
+            'subtotal'    => 'sometimes|numeric|min:0',
+            'tax'         => 'sometimes|numeric|min:0',
+            'discount'    => 'sometimes|numeric|min:0',
+            'status'      => 'sometimes|string|max:255',
         ]);
-        
-        $order = Order::findOrFail($id);
-        $order->update($validate);
-        return $order;
 
+        $order = Order::findOrFail($id);
+        $order->update($validated);
+
+        // Recalculate totals in case tax changed
+        // $order->recalculateTotals();
+
+        return response()->json($order->load(['customer', 'order_products.products']));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
         $order = Order::findOrFail($id);
-        $order -> delete();
-        return "Data delete successfully!";
+        $order->delete();
+        return response()->json(['message' => 'Data deleted successfully!']);
     }
 }
