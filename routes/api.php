@@ -14,7 +14,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     // Auth helpers
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
-
+});
 require __DIR__ . '/apis/categories.php';
 require __DIR__ . '/apis/users.php';
 require __DIR__ . '/apis/products.php';
@@ -22,5 +22,3 @@ require __DIR__ . '/apis/orders.php';
 require __DIR__ . '/apis/payments.php';
 require __DIR__ . '/apis/stock_movements.php';
 require __DIR__ . '/apis/order_product.php';
-
-});
