@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             "id"=> 1,
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -26,7 +26,7 @@ class UserSeeder extends Seeder
             'id'=> 2,
             'name' => 'Sarah Connor',
             'email' => 'sarah.c@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
             'id'=> 3,
             'name' => 'Michael Smith',
             'email' => 'm.smith@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
             'id'=> 4,
             'name' => 'Emily Watson',
             'email' => 'emily.watson@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -53,7 +53,7 @@ class UserSeeder extends Seeder
             'id'=> 5,
             'name' => 'David Miller',
             'email' => 'd.miller@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
             'id'=> 6,
             'name' => 'Jessica Taylor',
             'email' => 'jess.taylor@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
             'id'=> 7,
             'name' => 'James Wilson',
             'email' => 'j.wilson@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -80,7 +80,7 @@ class UserSeeder extends Seeder
             'id'=> 8,
             'name' => 'Amanda White',
             'email' => 'a.white@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -89,7 +89,7 @@ class UserSeeder extends Seeder
             'id'=> 9,
             'name' => 'Robert Johnson',
             'email' => 'robert.j@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
 
@@ -98,7 +98,7 @@ class UserSeeder extends Seeder
             'id'=> 10,
             'name' => 'Lisa Anderson',
             'email' => 'lisa.a@example.com',
-            'password' => Hash::make('123456789', ['rounds' => 12]),
+            'password' => Hash::make('123456789', ['rounds' => 10]),
             'role' => 'cashier',
             'phone_number' => '0123456789'
         ],
