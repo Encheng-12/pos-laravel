@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'email' => 'john.doe@example.com',
             'password' => '123456789', 
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status' => 'active'
 
         ],
         [
@@ -28,8 +29,9 @@ class UserSeeder extends Seeder
             'email' => 'sarah.c@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
-
+            'phone_number' => '0123456789',
+            'status'=> 'active'
+            
         ],
         [
             'id'=> 3,
@@ -37,7 +39,8 @@ class UserSeeder extends Seeder
             'email' => 'm.smith@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -46,7 +49,8 @@ class UserSeeder extends Seeder
             'email' => 'emily.watson@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -55,7 +59,8 @@ class UserSeeder extends Seeder
             'email' => 'd.miller@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
             ],
         [
@@ -64,7 +69,8 @@ class UserSeeder extends Seeder
             'email' => 'jess.taylor@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -73,7 +79,8 @@ class UserSeeder extends Seeder
             'email' => 'j.wilson@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -82,7 +89,8 @@ class UserSeeder extends Seeder
             'email' => 'a.white@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -91,7 +99,8 @@ class UserSeeder extends Seeder
             'email' => 'robert.j@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
 
         ],
         [
@@ -100,7 +109,8 @@ class UserSeeder extends Seeder
             'email' => 'lisa.a@example.com',
             'password' => '123456789',
             'role' => 'cashier',
-            'phone_number' => '0123456789'
+            'phone_number' => '0123456789',
+            'status'=> 'active'
         ],
         ];
 
@@ -112,6 +122,7 @@ class UserSeeder extends Seeder
                 'password'=> Hash::make($user['password']),
                 'role'=> $user['role'],
                 'phone_number' => $user['phone_number'],
+                'status'=> $user['status'],
                     
             ]);
         }
