@@ -47,7 +47,7 @@ class ProductController extends Controller
             'barcode'=>'nullable|string|max:255',
             'cost_price'=>'required|decimal:0,2|min:1',
             'selling_price'=>'required|decimal:0,2|min:1',
-            'stock_quantity'=>'required|decimal|min:1',
+            'stock_quantity'=>'required|decimal:0,2|min:1',
             'status'=>'nullable|string|max:255'
         ]);
 
