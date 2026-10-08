@@ -33,7 +33,7 @@ class AuthController extends Controller
 
         // 3. Verify password hash
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
-            return revsponse()->json([
+            return response()->json([
                 'message' => 'Invalid email or password.',
             ], 401);
         }
