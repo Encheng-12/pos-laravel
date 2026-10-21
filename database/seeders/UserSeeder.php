@@ -18,7 +18,7 @@ class UserSeeder extends Seeder
             'name' => 'John Doe',
             'email' => 'john.doe@example.com',
             'password' => '123456789', 
-            'role' => 'cashier',
+            'role' => 'admin',
             'phone_number' => '0123456789',
             'status' => 'active'
 
