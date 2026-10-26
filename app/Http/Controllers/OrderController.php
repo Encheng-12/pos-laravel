@@ -98,9 +98,6 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->update($validated);
 
-        // Recalculate totals in case tax changed
-        // $order->recalculateTotals();
-
         return response()->json($order->load(['customer', 'order_products.products']));
     }
 
