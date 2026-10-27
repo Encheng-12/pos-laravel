@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Order extends Model
 {
@@ -16,9 +17,31 @@ class Order extends Model
         'subtotal',
         'tax',
         'discount',
-        'total',
         'status',
     ];
+
+    // Virtual attribute so $order->total works everywhere without a database column
+    protected function total(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ($this->subtotal + $this->tax) - $this->discount,
+        );
+    }
+
+    protected $appends = ['total'];
+
+    // ADD THIS METHOD to calculate subtotal from items and save it
+    public function recalculateTotals()
+    {
+        // Sum up the amount from all related order_products
+        $subtotal = $this->order_products()->sum('amount');
+        $discount = $this->discount ?? 0;
+
+        // Update subtotal in the database
+        $this->update([
+            'subtotal' => $subtotal,
+        ]);
+    }
 
     public function customer(): BelongsTo
     {
@@ -33,7 +56,5 @@ class Order extends Model
     public function order_products(): HasMany
     {
         return $this->hasMany(Order_Product::class, 'order_id');
-    }
-
-    
+    }   
 }
