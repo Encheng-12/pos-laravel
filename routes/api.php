@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+// Notification
+
+Route::post('/send-mail', [NotificationController::class, ]);
+
 require __DIR__ . '/apis/categories.php';
 require __DIR__ . '/apis/users.php';
 require __DIR__ . '/apis/products.php';
