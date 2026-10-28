@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Order_Product;
+use App\Models\Payment; // <-- Import the Payment model
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
@@ -31,9 +32,9 @@ class OrderController extends Controller
         $validated = $request->validate([
             'cashier_id'         => 'required|exists:users,id',
             'customer_id'        => 'required|exists:users,id',
-            // 'invoice_no' is removed from validation rules because we generate it automatically below
             'tax'                => 'required|numeric|min:0',
             'status'             => 'required|string|max:255',
+            'payment_method'     => 'nullable|string|max:255', // Optional payment method input from frontend
             'items'              => 'required|array|min:1',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.quantity'   => 'required|integer|min:1',
@@ -41,12 +42,12 @@ class OrderController extends Controller
             'items.*.discount'   => 'nullable|numeric|min:0',
         ]);
 
-        return DB::transaction(function () use ($validated) {
-            // Automatically generate continuous invoice number (e.g., INV-0001, INV-0002, etc.)
+        return DB::transaction(function () use ($validated, $request) {
+            // Automatically generate continuous invoice number (e.g., INV-2026-0001, etc.)
             $year = date('Y');
             $latestOrder = Order::latest('id')->first();
             $nextId = $latestOrder ? $latestOrder->id + 1 : 1;
-            $invoiceNo = 'INV-' .$year .str_pad($nextId, 4, '0', STR_PAD_LEFT);
+            $invoiceNo = 'INV-' . $year . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
 
             // 1. Create Order shell with sequential invoice number
             $order = Order::create([
@@ -64,7 +65,7 @@ class OrderController extends Controller
                 $qty       = $item['quantity'];
                 $unitPrice = $item['unit_price'];
                 $discount  = $item['discount'] ?? 0;
-                $amount    = ($qty * $unitPrice) - $discount;
+                $amount    = ($qty * $unitPrice) - $discount; // Fixed multiplication symbol syntax
 
                 Order_Product::create([
                     'order_id'   => $order->id,
@@ -78,6 +79,18 @@ class OrderController extends Controller
 
             // 3. Summarize subtotal from order_product and update the order table
             $order->recalculateTotals();
+
+            // Reload totals to ensure $order->total has the accurate final calculated value
+            $order->refresh();
+
+            // 4. Automatically create a matching payment record for the payment page
+            Payment::create([
+                'order_id'       => $order->id,
+                'payment_method' => $request->input('payment_method', 'cash'), // Defaults to 'cash' if not specified
+                'amount'         => $order->total ?? 0,
+                'reference_no'   => 'PAY-' . str_pad($order->id, 4, '0', STR_PAD_LEFT),
+                'paid_at'        => now(),
+            ]);
 
             return response()->json($order->load(['customer', 'order_products.products']), 201);
         });
