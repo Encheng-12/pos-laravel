@@ -20,14 +20,21 @@ $app = Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
     })->create();
-    
-    if (getenv('VERCEL')) {
+
+    if (isset($_ENV['VERCEL']) || isset($_SERVER['VERCEL']) || getenv('VERCEL')) {
     $path = '/tmp/laravel-storage';
-    foreach (['framework/views', 'framework/sessions',
-              'framework/cache/data', 'logs'] as $dir) {
+    foreach ([
+        'framework/views',
+        'framework/sessions',
+        'framework/cache/data',
+        'logs',
+    ] as $dir) {
         @mkdir($path.'/'.$dir, 0775, true);
     }
+    @mkdir('/tmp/views', 0775, true);
     $app->useStoragePath($path);
 }
+
+
 
 return $app;
