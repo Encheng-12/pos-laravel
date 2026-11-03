@@ -31,7 +31,7 @@ class OrderController extends Controller
         $validated = $request->validate([
             'cashier_id'         => 'required|exists:users,id',
             'customer_id'        => 'required|exists:users,id',
-            'invoice_no'         => 'required|string|max:255|unique:orders,invoice_no',
+            // 'invoice_no' is removed from validation rules because we generate it automatically below
             'tax'                => 'required|numeric|min:0',
             'status'             => 'required|string|max:255',
             'items'              => 'required|array|min:1',
@@ -42,15 +42,20 @@ class OrderController extends Controller
         ]);
 
         return DB::transaction(function () use ($validated) {
-            // 1. Create Order shell
+            // Automatically generate continuous invoice number (e.g., INV-0001, INV-0002, etc.)
+            $year = date('Y');
+            $latestOrder = Order::latest('id')->first();
+            $nextId = $latestOrder ? $latestOrder->id + 1 : 1;
+            $invoiceNo = 'INV-' .$year .str_pad($nextId, 4, '0', STR_PAD_LEFT);
+
+            // 1. Create Order shell with sequential invoice number
             $order = Order::create([
                 'cashier_id'  => $validated['cashier_id'],
                 'customer_id' => $validated['customer_id'],
-                'invoice_no'  => $validated['invoice_no'],
+                'invoice_no'  => $invoiceNo,
                 'tax'         => $validated['tax'],
                 'subtotal'    => 0,
                 'discount'    => 0,
-                'total'       => 0,
                 'status'      => $validated['status'],
             ]);
 
@@ -71,7 +76,7 @@ class OrderController extends Controller
                 ]);
             }
 
-            // 3. Summarize total price from order_product and update the order table
+            // 3. Summarize subtotal from order_product and update the order table
             $order->recalculateTotals();
 
             return response()->json($order->load(['customer', 'order_products.products']), 201);
@@ -97,9 +102,6 @@ class OrderController extends Controller
 
         $order = Order::findOrFail($id);
         $order->update($validated);
-
-        // Recalculate totals in case tax changed
-        // $order->recalculateTotals();
 
         return response()->json($order->load(['customer', 'order_products.products']));
     }
