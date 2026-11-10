@@ -13,6 +13,7 @@ class Order extends Model
         'id',
         'cashier_id',
         'customer_id',
+        'customer_name', // Added customer_name support
         'invoice_no',
         'subtotal',
         'tax',
@@ -30,16 +31,16 @@ class Order extends Model
 
     protected $appends = ['total'];
 
-    // ADD THIS METHOD to calculate subtotal from items and save it
+    // Calculate subtotal from items and save it
     public function recalculateTotals()
     {
         // Sum up the amount from all related order_products
         $subtotal = $this->order_products()->sum('amount');
         $discount = $this->discount ?? 0;
 
-        // Update subtotal in the database
+        // Update subtotal in the database (cast to integer to match DB schema)
         $this->update([
-            'subtotal' => $subtotal,
+            'subtotal' => (int) round($subtotal),
         ]);
     }
 
