@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Note;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,3 +26,4 @@ require __DIR__ . '/apis/orders.php';
 require __DIR__ . '/apis/payments.php';
 require __DIR__ . '/apis/stock_movements.php';
 require __DIR__ . '/apis/order_product.php';
+
