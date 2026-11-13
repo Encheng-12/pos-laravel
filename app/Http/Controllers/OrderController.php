@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Order_Product;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class OrderController extends Controller
 {
@@ -37,7 +39,6 @@ class OrderController extends Controller
         $validated =$request->validate([
             'cashier_id'         => 'required|exists:users,id',
             'customer_id'        => 'nullable|exists:users,id',
-            'customer_name'      => 'nullable|string|max:255',
             'tax'                => 'required|numeric|min:0',
             'status'             => 'required|string|max:255',
             'payment_method'     => 'nullable|string|max:255',
@@ -55,8 +56,16 @@ class OrderController extends Controller
             // 1. Create Order shell
             $order = Order::create([
                 'cashier_id'    => $validated['cashier_id'],
-                'customer_id'   => $validated['customer_id'] ?? null,
-                'customer_name' => $request->input('customer_name', 'MOC'),
+                'customer_id'   => $validated['customer_id'] ?? User::firstOrCreate(
+                    ['email' => 'walk-in@moc.invalid'],
+                    [
+                        'name'         => 'MOC',
+                        'password'     => Str::random(40),
+                        'phone_number' => '0000000000',
+                        'role'         => 'customer',
+                        'status'       => 'active',
+                    ]
+                )->id,
                 'invoice_no'    => $invoiceNo,
                 'tax'           => (int) round($validated['tax']),
                 'subtotal'      => 0,
@@ -93,7 +102,7 @@ class OrderController extends Controller
                 'paid_at'        => now(),
             ]);
 
-            return response()->json($order->load(['order_products.products']), 201);
+            return response()->json($order->load(['customer', 'order_products.products']), 201);
         });
     }
 
@@ -106,8 +115,7 @@ class OrderController extends Controller
     {
         $validated =$request->validate([
             'cashier_id'    => 'sometimes|exists:users,id',
-            'customer_id'   => 'sometimes|nullable|exists:users,id',
-            'customer_name' => 'sometimes|string|max:255',
+            'customer_id'   => 'sometimes|exists:users,id',
             'invoice_no'    => 'sometimes|string|max:255',
             'subtotal'      => 'sometimes|numeric|min:0',
             'tax'           => 'sometimes|numeric|min:0',

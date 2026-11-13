@@ -13,7 +13,6 @@ class Order extends Model
         'id',
         'cashier_id',
         'customer_id',
-        'customer_name', // Added customer_name support
         'invoice_no',
         'subtotal',
         'tax',
