@@ -52,20 +52,35 @@ class OrderController extends Controller
         return DB::transaction(function () use ($validated, $request) {$year = date('Y');
             $latestOrder = Order::latest('id')->first();$nextId = $latestOrder ? $latestOrder->id + 1 : 1;
             $invoiceNo = 'INV-' . $year . '-' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
+            $customerId = $validated['customer_id'] ?? null;
 
-            // 1. Create Order shell
-            $order = Order::create([
-                'cashier_id'    => $validated['cashier_id'],
-                'customer_id'   => $validated['customer_id'] ?? User::firstOrCreate(
-                    ['email' => 'walk-in@moc.invalid'],
-                    [
+            if (!$customerId) {
+                $walkInCustomer = User::where('email', 'walk-in@moc.invalid')->first();
+
+                if (!$walkInCustomer) {
+                    if (DB::connection()->getDriverName() === 'pgsql') {
+                        DB::statement(
+                            "SELECT setval(pg_get_serial_sequence('users', 'id'), COALESCE(MAX(id), 1), MAX(id) IS NOT NULL) FROM users"
+                        );
+                    }
+
+                    $walkInCustomer = User::create([
                         'name'         => 'MOC',
+                        'email'        => 'walk-in@moc.invalid',
                         'password'     => Str::random(40),
                         'phone_number' => '0000000000',
                         'role'         => 'customer',
                         'status'       => 'active',
-                    ]
-                )->id,
+                    ]);
+                }
+
+                $customerId = $walkInCustomer->id;
+            }
+
+            // 1. Create Order shell
+            $order = Order::create([
+                'cashier_id'    => $validated['cashier_id'],
+                'customer_id'   => $customerId,
                 'invoice_no'    => $invoiceNo,
                 'tax'           => (int) round($validated['tax']),
                 'subtotal'      => 0,
