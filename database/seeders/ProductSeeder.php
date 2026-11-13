@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
 {
@@ -13,111 +13,46 @@ class ProductSeeder extends Seeder
      */
     public function run(): void
     {
-        $products =[
-            [
-                'cid' => 1,
-                'name' => 'Wireless Mechanical Keyboard',
-                'barcode' => '8901234567011',
-                'cost_price' => 45.00,
-                'selling_price' => 89.99,
-                'stock_quantity' => 120,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 1,
-                'name' => 'Ergonomic Vertical Mouse',
-                'barcode' => '8901234567028',
-                'cost_price' => 22.50,
-                'selling_price' => 49.99,
-                'stock_quantity' => 85,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 2,
-                'name' => 'Ultra-Wide 34-inch Monitor',
-                'barcode' => '8901234567035',
-                'cost_price' => 280.00,
-                'selling_price' => 449.99,
-                'stock_quantity' => 15,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 2,
-                'name' => 'USB-C Hub Multiport Adapter',
-                'barcode' => '8901234567042',
-                'cost_price' => 12.00,
-                'selling_price' => 29.99,
-                'stock_quantity' => 200,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 3,
-                'name' => 'Stainless Steel Water Bottle',
-                'barcode' => '8901234567059',
-                'cost_price' => 8.00,
-                'selling_price' => 24.99,
-                'stock_quantity' => 150,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 3,
-                'name' => 'Durable Camping Backpack',
-                'barcode' => '8901234567066',
-                'cost_price' => 35.00,
-                'selling_price' => 79.99,
-                'stock_quantity' => 40,
-                'status' => 'pending',
-                
-            ],
-            [
-                'cid' => 4,
-                'name' => 'LED Desk Lamp with Wireless Charger',
-                'barcode' => '8901234567073',
-                'cost_price' => 18.00,
-                'selling_price' => 39.99,
-                'stock_quantity' => 60,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 4,
-                'name' => 'Memory Foam Seat Cushion',
-                'barcode' => '8901234567080',
-                'cost_price' => 15.00,
-                'selling_price' => 34.99,
-                'stock_quantity' => 0,
-                'status' => 'pending',
-                
-            ],
-            [
-                'cid' => 5,
-                'name' => 'Noise-Canceling Bluetooth Headphones',
-                'barcode' => '8901234567097',
-                'cost_price' => 60.00,
-                'selling_price' => 129.99,
-                'stock_quantity' => 30,
-                'status' => 'active',
-                
-            ],
-            [
-                'cid' => 5,
-                'name' => 'Portable Power Bank 20000mAh',
-                'barcode' => '8901234567103',
-                'cost_price' => 25.00,
-                'selling_price' => 59.99,
-                'stock_quantity' => 95,
-                'status' => 'active',
-                
-            ]
+        $categoryIds = Category::query()
+            ->whereIn('name', [
+                'Beverages',
+                'Snacks & Confectionery',
+                'Bakery & Pastries',
+                'Dairy & Eggs',
+                'Fresh Produce',
+                'Frozen Foods',
+                'Pantry Staples',
+                'Personal Care',
+                'Household Essentials',
+                'Prepared Meals',
+            ])
+            ->pluck('id', 'name');
+
+        $products = [
+            ['category' => 'Beverages', 'name' => 'Bottled Water', 'barcode' => '8901234567011', 'cost_price' => 1, 'selling_price' => 2, 'stock_quantity' => 97],
+            ['category' => 'Beverages', 'name' => 'Orange Juice', 'barcode' => '8901234567028', 'cost_price' => 2, 'selling_price' => 3, 'stock_quantity' => 78],
+            ['category' => 'Snacks & Confectionery', 'name' => 'Potato Chips', 'barcode' => '8901234567035', 'cost_price' => 2, 'selling_price' => 3, 'stock_quantity' => 86],
+            ['category' => 'Snacks & Confectionery', 'name' => 'Chocolate Bar', 'barcode' => '8901234567042', 'cost_price' => 1, 'selling_price' => 2, 'stock_quantity' => 99],
+            ['category' => 'Bakery & Pastries', 'name' => 'Sandwich Bread', 'barcode' => '8901234567059', 'cost_price' => 2, 'selling_price' => 4, 'stock_quantity' => 59],
+            ['category' => 'Dairy & Eggs', 'name' => 'Whole Milk', 'barcode' => '8901234567066', 'cost_price' => 2, 'selling_price' => 5, 'stock_quantity' => 70],
+            ['category' => 'Fresh Produce', 'name' => 'Fresh Apples', 'barcode' => '8901234567073', 'cost_price' => 1, 'selling_price' => 2, 'stock_quantity' => 118],
+            ['category' => 'Frozen Foods', 'name' => 'Frozen Pizza', 'barcode' => '8901234567080', 'cost_price' => 4, 'selling_price' => 7, 'stock_quantity' => 30],
+            ['category' => 'Pantry Staples', 'name' => 'Pasta', 'barcode' => '8901234567097', 'cost_price' => 1, 'selling_price' => 2, 'stock_quantity' => 38],
+            ['category' => 'Personal Care', 'name' => 'Shampoo', 'barcode' => '8901234567103', 'cost_price' => 3, 'selling_price' => 5, 'stock_quantity' => 47],
+            ['category' => 'Household Essentials', 'name' => 'Laundry Detergent', 'barcode' => '8901234567110', 'cost_price' => 5, 'selling_price' => 9, 'stock_quantity' => 40],
+            ['category' => 'Prepared Meals', 'name' => 'Chicken Salad', 'barcode' => '8901234567127', 'cost_price' => 4, 'selling_price' => 7, 'stock_quantity' => 30],
         ];
-        
-        foreach ($products as $product){
-            Product::create($product);
+
+        foreach ($products as $product) {
+            $categoryName = $product['category'];
+            unset($product['category']);
+
+            Product::create([
+                ...$product,
+                'cid' => $categoryIds->get($categoryName)
+                    ?? Category::where('name', $categoryName)->firstOrFail()->id,
+                'status' => 'active',
+            ]);
         }
     }
 }
